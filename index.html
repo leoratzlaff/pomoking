@@ -1,0 +1,80 @@
+<html>
+<head>
+    <title>Pomo King</title>
+</head>
+<style>
+    html{
+        font-family: sans-serif;
+        background: darkslategray;
+        color: beige;
+    }
+    body{
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .timer{
+        font-size: 3rem;
+    }
+    .sound{
+        display: none;
+    }
+</style>
+<body>
+    <span class="timer" id="timer">25:00</span>
+    <audio class="sound" id="soundBreak" src="sound.mp3" controls>
+    <audio class="sound" id="soundWork" src="sound.mp3" controls>
+</body>
+<script src="HackTimer.min.js"></script>
+<script>
+
+    const config = {
+        speed: 1000,
+        timeWork: 25 * 60 * 1000,
+        timeBreak: 5 * 60 * 1000
+    }
+
+    const state = {
+        timer: config.timeWork,
+        atBreak: false
+    }
+
+    function run() {
+        setInterval(
+            () => {
+                state.timer -= config.speed;
+                if(state.timer === 0){
+                    state.atBreak = !state.atBreak;
+                    if(state.atBreak==true){
+                        document.getElementById('soundBreak').play();
+                        state.timer = config.timeBreak;
+                    }else{
+                        document.getElementById('soundWork').play();
+                        state.timer = config.timeWork;
+                    }
+                }
+                document.getElementById('timer').innerHTML = formatSeconds(state.timer);
+                document.title = 'Pomo King (' + formatSeconds(state.timer) + ')';
+            },
+            config.speed
+        );
+    }
+
+    function formatSeconds(millisecondsLeft) {
+
+        let secondsLeft = millisecondsLeft / 1000;
+        let minutes = Math.floor(secondsLeft / 60);
+        let seconds = Math.ceil(secondsLeft % 60);
+
+        let maskMinutes = seconds === 60 ? (minutes + 1).toString().padStart(2, '0') : minutes.toString().padStart(2, '0');
+        let maskSeconds = seconds === 60 ? '00' : seconds.toString().padStart(2, '0');
+
+        return maskMinutes + ':' + maskSeconds;
+    }
+
+    (function () {
+        run();
+    })();
+</script>
+</html>
