@@ -1,33 +1,97 @@
 <html>
+
 <head>
     <title>Pomo King</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="./images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/icons/favicon-16x16.png">
+    <meta name="theme-color" content="#080416">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:700|Roboto:300,700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            font-family: 'Roboto', sans-serif;
+            background: #080416;
+            color: beige;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-image: url('./images/pomo-king.svg');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: auto 280px;
+            transition: opacity .3s;
+        }
+
+        .timer {
+            font-size: 4rem;
+            transform: translateY(32%);
+            color: #080416;
+            font-family: 'Roboto Mono', monospace;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .sound {
+            display: none;
+        }
+
+        .status_message {
+            width: 100%;
+            position: absolute;
+            bottom: 2rem;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            color: #D81F0D;
+            transition: color 0.3s;
+            letter-spacing: .2em;
+            text-align: center;
+        }
+
+        .status_message.rest {
+            color: #9EBC20;
+            transform: rotateX(360);
+        }
+
+        .status_message p {
+            opacity: 0.5;
+            margin: 0;
+        }
+
+        .status_message .status {
+            font-size: 2em;
+            display: block;
+        }
+    </style>
 </head>
-<style>
-    html{
-        font-family: sans-serif;
-        background: darkslategray;
-        color: beige;
-    }
-    body{
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .timer{
-        font-size: 3rem;
-    }
-    .sound{
-        display: none;
-    }
-</style>
-<body>
-    <span class="timer" id="timer">25:00</span>
-    <audio class="sound" id="soundBreak" src="sound.mp3" controls>
-    <audio class="sound" id="soundWork" src="sound.mp3" controls>
+
+<body style="opacity: 0;">
+    <span class="timer" id="timer"></span>
+    <div id="status_message" class="status_message">
+        <p>Time to</p> <span class="status" id="status"></span>
+    </div>
+    <audio class="sound" id="soundBreak" src="sound-break.mp3" controls>
+        <audio class="sound" id="soundWork" src="sound-focus.mp3" controls>
 </body>
 <script src="HackTimer.min.js"></script>
 <script>
+
+    const d = new Date();
+    const initial_minutes = d.getMinutes();
+    const initial_seconds = d.getSeconds();
 
     const config = {
         speed: 1000,
@@ -35,24 +99,65 @@
         timeBreak: 5 * 60 * 1000
     }
 
-    const state = {
-        timer: config.timeWork,
-        atBreak: false
+    let initial_timer = initial_minutes >= 30
+        ? ((55 - initial_minutes) * 60 * 1000) - initial_seconds * 1000
+        : ((25 - initial_minutes) * 60 * 1000) - initial_seconds * 1000;
+    let initial_break = false;
+
+    if (initial_timer < 0) {
+        initial_timer += 5 * 60 * 1000;
+        initial_break = true;
     }
+
+    const state = {
+        timer: initial_timer,
+        atBreak: initial_break
+    }
+
+    function updateStatus() {
+        status = state.atBreak ? 'rest' : 'focus';
+        document.getElementById('status').innerHTML = state.atBreak ? 'rest' : 'focus';
+        if (state.atBreak) {
+            document.getElementById('status_message').classList.add('rest');
+        } else {
+            document.getElementById('status_message').classList.remove('rest');
+        }
+    };
+
+    function updateClock() {
+        state.timer -= config.speed;
+        if (state.timer === 0) {
+            state.atBreak = !state.atBreak;
+            if (state.atBreak == true) {
+                document.getElementById('soundBreak').play();
+                state.timer = config.timeBreak;
+            } else {
+                document.getElementById('soundWork').play();
+                state.timer = config.timeWork;
+            }
+            updateStatus();
+        }
+        document.getElementById('timer').innerHTML = formatSeconds(state.timer);
+        document.title = 'Pomo King (' + formatSeconds(state.timer) + ')';
+    }
+
+    document.getElementById('timer').innerHTML = formatSeconds(state.timer);
+    updateStatus();
 
     function run() {
         setInterval(
             () => {
                 state.timer -= config.speed;
-                if(state.timer === 0){
+                if (state.timer === 0) {
                     state.atBreak = !state.atBreak;
-                    if(state.atBreak==true){
+                    if (state.atBreak == true) {
                         document.getElementById('soundBreak').play();
                         state.timer = config.timeBreak;
-                    }else{
+                    } else {
                         document.getElementById('soundWork').play();
                         state.timer = config.timeWork;
                     }
+                    updateStatus();
                 }
                 document.getElementById('timer').innerHTML = formatSeconds(state.timer);
                 document.title = 'Pomo King (' + formatSeconds(state.timer) + ')';
@@ -75,6 +180,8 @@
 
     (function () {
         run();
+        document.body.style.opacity = 1;
     })();
 </script>
+
 </html>
