@@ -7,7 +7,6 @@
   <meta name="description" content="A hands-free pomodoro web app." />
   <meta name="keywords" content="pomo king, pomodoro, app, leonardo, ratzlaff" />
   <link rel="manifest" href="./manifest.json" />
-  <link rel="apple-touch-icon" sizes="180x180" href="./images/icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="./images/icons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="./images/icons/favicon-16x16.png" />
   <meta name="theme-color" content="#080416" />
@@ -83,7 +82,6 @@
 
     body>.status_message.rest {
       color: #9ebc20;
-      transform: rotateX(360);
     }
 
     body>.status_message p {
@@ -94,6 +92,32 @@
     body>.status_message .status {
       font-size: 2em;
       display: block;
+    }
+
+    .enable-sound {
+      top: 3rem;
+      position: relative;
+      color: #F07B13;
+      text-decoration: none;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .enable-sound.enabled {
+      color: #9ebc20;
+      animation: fadeOut 2s ease-in 1 forwards;
     }
 
     section.about {
@@ -154,13 +178,14 @@
 </head>
 
 <body style="opacity: 0;">
+  <a id="enable-sound" class="enable-sound" href="javascript:enableSound()">Enable Sound Effects</a>
   <span class="timer-diplay" id="timer-diplay"></span>
   <div id="status_message" class="status_message">
     <p>Time to</p>
     <span class="status" id="status"></span>
   </div>
-  <audio class="sound" id="soundBreak" src="sound-break.mp3" controls></audio>
-  <audio class="sound" id="soundWork" src="sound-focus.mp3" controls></audio>
+  <audio class="sound" id="soundBreak" src="sound-break.mp3" muted="muted" controls></audio>
+  <audio class="sound" id="soundWork" src="sound-focus.mp3" muted="muted" controls></audio>
   <section id="about" class="about">
     <h2>About</h2>
     <p>
@@ -203,6 +228,13 @@
       : (25 - initial_minutes) * 60 * 1000 - initial_seconds * 1000;
   let initial_break = false;
 
+  function enableSound() {
+    document.getElementById("soundBreak").muted = false;
+    document.getElementById("soundWork").muted = false;
+    document.getElementById("enable-sound").classList.add("enabled");
+    document.getElementById("enable-sound").innerText = "Sound Effects Enabled";
+  }
+
   if (initial_timer < 0) {
     initial_timer += 5 * 60 * 1000;
     initial_break = true;
@@ -234,9 +266,11 @@
       state.atBreak = !state.atBreak;
       if (state.atBreak == true) {
         document.getElementById("soundBreak").play();
+        console.log("teste");
         state.timer = config.timeBreak;
       } else {
         document.getElementById("soundWork").play();
+        console.log("teste");
         state.timer = config.timeWork;
       }
       updateStatus();
