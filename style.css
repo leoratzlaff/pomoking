@@ -1,0 +1,208 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+html {
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  background: #080416;
+  overflow: hidden;
+}
+@media only screen and (max-width: 600px) {
+  body {
+    font-size: 15px;
+  }
+}
+body {
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-image: url("./images/pomo-king.svg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto 240px;
+  -webkit-transition: opacity 0.3s;
+  -o-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+  height: 100vh;
+}
+body>.timer-diplay {
+  font-size: 3.6rem;
+  -webkit-transform: translateY(-18%) translateX(-50%);
+      -ms-transform: translateY(-18%) translateX(-50%);
+          transform: translateY(-18%) translateX(-50%);
+  color: #080416;
+  font-family: "Roboto Mono", monospace;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+body>.sound {
+  display: none;
+}
+body>.status_message {
+  width: 100%;
+  position: absolute;
+  bottom: 2rem;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #d81f0d;
+  -webkit-transition: color 0.3s;
+  -o-transition: color 0.3s;
+  transition: color 0.3s;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+body>.status_message.rest {
+  color: #9ebc20;
+}
+body>.status_message p {
+  opacity: 0.5;
+  margin: 0;
+}
+body>.status_message .status {
+  font-size: 2em;
+  display: block;
+}
+.enable-sound {
+  top: 3rem;
+  position: absolute;
+  left: 50%;
+  color: #F07B13;
+  border: solid 1px #F07B13;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.enable-sound.enabled {
+  color: #9ebc20;
+  border-color: #9ebc20;
+  -webkit-animation: fadeOut 2s ease-in 1 forwards;
+          animation: fadeOut 2s ease-in 1 forwards;
+}
+section.about {
+  background: #9ebc20;
+  position: absolute;
+  left: 0;
+  -webkit-transform: translateX(calc(-100% + 1rem));
+      -ms-transform: translateX(calc(-100% + 1rem));
+          transform: translateX(calc(-100% + 1rem));
+  top: 5%;
+  height: 90%;
+  color: #080416;
+  border-radius: 0 1rem 1rem 0;
+  padding: 2rem;
+  width: 24rem;
+  max-width: calc(100vw - 1rem);
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+}
+section.about h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+section.about:hover,
+section.about.open {
+  -webkit-transform: translateX(0);
+      -ms-transform: translateX(0);
+          transform: translateX(0);
+}
+section.about p {
+  line-height: 1.5;
+}
+section.about a {
+  font-weight: 700;
+  text-decoration: none;
+  color: inherit;
+}
+section.about .timer {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  line-height: 1rem;
+}
+section.about .timer .timer-diplay {
+  font-size: 1.5em;
+  font-weight: 700;
+  font-family: "Roboto Mono", monospace;
+}
+section.about .timer .status_message p {
+  font-size: 1em;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+input[type=range]#volume {
+  -webkit-appearance: none;
+  margin: 0;
+  width: 100%;
+  max-width: 200px;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: #080416;
+  border-radius: 0;
+}
+input[type=range]::-webkit-slider-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: #9ebc20;
+  border: solid 4px #080416;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -8px;
+}
