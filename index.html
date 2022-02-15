@@ -4,16 +4,15 @@
   <title>Pomo King</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A hands-free pomodoro web app." />
+  <meta name="description" content="Hands-free pomodoro web app." />
   <meta name="keywords" content="pomo king, pomodoro, app, leonardo, ratzlaff" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" type="image/png" sizes="32x32" href="./images/icons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="./images/icons/favicon-16x16.png" />
   <meta name="theme-color" content="#080416" />
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:700&text=0123456789:|Roboto:400,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="style.css?0214">
 </head>
-
 <body style="opacity: 0;">
   <a id="enable-sound" class="enable-sound" href="javascript:enableSound()" rel="noreferrer">Enable sound effects</a>
   <span class="timer-diplay" id="timer-diplay"></span>
@@ -21,8 +20,8 @@
     <p>Time to</p>
     <span class="status" id="status"></span>
   </div>
-  <audio class="sound" id="soundBreak" src="sound-break.mp3" muted="muted" controls></audio>
-  <audio class="sound" id="soundWork" src="sound-focus.mp3" muted="muted" controls></audio>
+  <audio class="sound" id="soundRest" src="sound-rest.mp3" muted="muted" controls></audio>
+  <audio class="sound" id="soundWork" src="sound-work.mp3" muted="muted" controls></audio>
   <section id="about" class="about">
     <h2>About</h2>
     <p>
@@ -31,23 +30,21 @@
     </p>
     <p>
       Found this useful?
-      <a href="https://www.buymeacoffee.com/leoratzlaff" target="_blank" rel="noreferrer"><br />
+      <a href="https://ko-fi.com/leoratzlaff" target="_blank" rel="noreferrer"><br />
         Buy me a coffee :)</a>
       </p>
       <p>
         Volume:<br />
         <input type="range" min="0" max="100" value="50" id="volume" onchange="setVolume(this.value)">
       </p>
-
-    <div class="timer">
-      <span class="timer-diplay" id="timer-diplay2"></span>
-      <div class="status_message">
-        <p>Time to <span class="status" id="status2"></span></p>
+      <div class="timer">
+        <span class="timer-diplay" id="timer-diplay2"></span>
+        <div class="status_message">
+          <p>Time to <span class="status" id="status2"></span></p>
+        </div>
       </div>
-    </div>
   </section>
 </body>
 <script src="HackTimer.min.js"></script>
-<script src="script.js"></script>
-
+<script src="script.js?0214"></script>
 </html>

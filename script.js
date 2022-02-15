@@ -5,41 +5,40 @@ const initial_seconds = d.getSeconds();
 const config = {
   speed: 1000,
   timeWork: 25 * 60 * 1000,
-  timeBreak: 5 * 60 * 1000
+  timeRest: 5 * 60 * 1000
 };
 
 let initial_timer =
   initial_minutes >= 30
     ? (55 - initial_minutes) * 60 * 1000 - initial_seconds * 1000
     : (25 - initial_minutes) * 60 * 1000 - initial_seconds * 1000;
-let initial_break = false;
+let initial_rest = false;
 
 function enableSound() {
-  document.getElementById("soundBreak").muted = false;
+  document.getElementById("soundRest").muted = false;
   document.getElementById("soundWork").muted = false;
   document.getElementById("enable-sound").classList.add("enabled");
-  document.getElementById("enable-sound").innerText = "Sound Effects Enabled";
+  document.getElementById("enable-sound").innerText = "Sound effects enabled";
 }
 
 if (initial_timer < 0) {
   initial_timer += 5 * 60 * 1000;
-  initial_break = true;
+  initial_rest = true;
 }
 
 const state = {
   timer: initial_timer,
-  atBreak: initial_break
+  atRest: initial_rest
 };
 
 function updateStatus() {
-  status = state.atBreak ? "rest" : "focus";
-  document.getElementById("status").innerHTML = state.atBreak
-    ? "rest"
-    : "focus";
-  document.getElementById("status2").innerHTML = state.atBreak
-    ? "rest"
-    : "focus";
-  if (state.atBreak) {
+  document.getElementById("status").innerHTML = state.atRest
+    ? "Rest"
+    : "Focus";
+  document.getElementById("status2").innerHTML = state.atRest
+    ? "Rest"
+    : "Focus";
+  if (state.atRest) {
     document.getElementById("status_message").classList.add("rest");
   } else {
     document.getElementById("status_message").classList.remove("rest");
@@ -49,12 +48,12 @@ function updateStatus() {
 function updateClock() {
   state.timer -= config.speed;
   if (state.timer === 0) {
-    state.atBreak = !state.atBreak;
-    if (state.atBreak == true) {
-      document.getElementById("soundBreak").currentTime = 0;
-      document.getElementById("soundBreak").play();
+    state.atRest = !state.atRest;
+    if (state.atRest == true) {
+      document.getElementById("soundRest").currentTime = 0;
+      document.getElementById("soundRest").play();
       console.log("teste");
-      state.timer = config.timeBreak;
+      state.timer = config.timeRest;
     } else {
       document.getElementById("soundWork").currentTime = 0;
       document.getElementById("soundWork").play();
@@ -63,32 +62,24 @@ function updateClock() {
     }
     updateStatus();
   }
-  document.getElementById("timer-diplay").innerHTML = formatSeconds(
-    state.timer
-  );
-  document.getElementById("timer-diplay2").innerHTML = formatSeconds(
-    state.timer
-  );
+  document.getElementById("timer-diplay").innerHTML = formatSeconds(state.timer);
+  document.getElementById("timer-diplay2").innerHTML = formatSeconds(state.timer);
   document.title = "Pomo King (" + formatSeconds(state.timer) + ")";
 }
 
-document.getElementById("timer-diplay").innerHTML = formatSeconds(
-  state.timer
-);
-document.getElementById("timer-diplay2").innerHTML = formatSeconds(
-  state.timer
-);
+document.getElementById("timer-diplay").innerHTML = formatSeconds(state.timer);
+document.getElementById("timer-diplay2").innerHTML = formatSeconds(state.timer);
 updateStatus();
 
 function run() {
   setInterval(() => {
     state.timer -= config.speed;
     if (state.timer === 0) {
-      state.atBreak = !state.atBreak;
-      if (state.atBreak == true) {
-        document.getElementById("soundBreak").currentTime = 0;
-        document.getElementById("soundBreak").play();
-        state.timer = config.timeBreak;
+      state.atRest = !state.atRest;
+      if (state.atRest == true) {
+        document.getElementById("soundRest").currentTime = 0;
+        document.getElementById("soundRest").play();
+        state.timer = config.timeRest;
       } else {
         document.getElementById("soundWork").currentTime = 0;
         document.getElementById("soundWork").play();
@@ -124,14 +115,14 @@ function formatSeconds(millisecondsLeft) {
 function setVolume(value){
   enableSound()
   let newVolume = value/100;
-  document.getElementById("soundBreak").volume = newVolume;
+  document.getElementById("soundRest").volume = newVolume;
   document.getElementById("soundWork").volume = newVolume;
-  document.getElementById("soundBreak").currentTime = 0;
-  document.getElementById("soundBreak").play();
+  document.getElementById("soundRest").currentTime = 0;
+  document.getElementById("soundRest").play();
 }
 
 (function () {
-  document.getElementById("soundBreak").volume = 0.5;
+  document.getElementById("soundRest").volume = 0.5;
   document.getElementById("soundWork").volume = 0.5;
   run();
   document.body.style.opacity = 1;
